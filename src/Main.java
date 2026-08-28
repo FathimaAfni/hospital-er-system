@@ -28,6 +28,8 @@ public class Main {
                 case 9 -> undoLastTreatment();
                 case 10 -> addVisitToPatient();
                 case 11 -> viewPatientVisitHistory();
+                case 12 -> removeVisitFromPatient();
+                case 13 -> searchVisitForPatient();
                 case 0 -> { running = false; System.out.println("Exiting system. Goodbye!"); }
                 default -> System.out.println("Invalid choice. Try again.");
             }
@@ -48,6 +50,8 @@ public class Main {
         System.out.println(" 9. Undo last treatment record (pop)");
         System.out.println("10. Add a visit record to a patient (linked list add)");
         System.out.println("11. View a patient's visit history");
+        System.out.println("12. Remove a visit record (linked list remove)");
+        System.out.println("13. Search for a visit by Visit ID (linked list search)");
         System.out.println(" 0. Exit");
         System.out.println("=================================================");
     }
@@ -145,6 +149,30 @@ public class Main {
         }
         System.out.println("Visit history for " + patient.getName() + ":");
         patient.getVisitHistory().displayVisits();
+    }
+
+    private static void removeVisitFromPatient() {
+        int id = readInt("Enter Patient ID: ");
+        Patient patient = patientRecords.search(id);
+        if (patient == null) {
+            System.out.println("No patient with that ID.");
+            return;
+        }
+        int visitId = readInt("Enter Visit ID to remove: ");
+        boolean removed = patient.getVisitHistory().removeVisit(visitId);
+        System.out.println(removed ? "Visit removed." : "No visit found with that ID.");
+    }
+
+    private static void searchVisitForPatient() {
+        int id = readInt("Enter Patient ID: ");
+        Patient patient = patientRecords.search(id);
+        if (patient == null) {
+            System.out.println("No patient with that ID.");
+            return;
+        }
+        int visitId = readInt("Enter Visit ID to search: ");
+        Visit found = patient.getVisitHistory().searchVisit(visitId);
+        System.out.println(found == null ? "Visit not found." : "Found -> " + found);
     }
 
     // ---------- Helper ----------
